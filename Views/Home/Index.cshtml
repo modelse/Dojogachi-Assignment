@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="~/css/site.css" rel="stylesheet">
+    </head>
+    <body>
+    <div id="top"> <h3>Fullness: @ViewBag.fullness </h3>
+    <h3>Happiness: @ViewBag.happiness </h3>
+    <h3>Meals: @ViewBag.meals</h3>
+    <h3>Energy: @ViewBag.energy</h3>
+    </div>
+    @if(ViewBag.life==1) {
+        <div id="main">
+            @if(ViewBag.pic=="normal"){
+            <img src="~/images/egg.gif" alt="dojogachi">
+            }
+            else if(ViewBag.pic=="sleep"){
+                <img src="~/images/sleeping.gif" alt="sleeping" height="300" width="600">
+            }
+            else if(ViewBag.pic=="play"){
+                <img src="~/images/ball.gif" alt="playing" height="300" width="600">
+            }
+            else if(ViewBag.pic=="work"){
+                <img src="~/images/work.gif" alt="working" height="300" width="500">
+            }
+            else{
+                <img src="~/images/pie.gif" alt="eating" height="300" width="600">
+            }
+
+            <h4>@ViewBag.Action<h4>
+        </div>
+        <div id="commands">
+            <form action="feed" method="post">
+            <input class="button" type="submit" name="feed" value="Feed"> 
+            </form>
+            <form action="play" method="post">
+            <input class="button" type="submit" name="play" value="Play"> 
+            </form>
+            <form action="work" method="post">
+            <input class="button" type="submit" name="work" value="Work"> 
+            </form>
+            <form action="sleep" method="post">
+            <input  class="button" type="submit" name="sleep" value="Sleep"> 
+            </form>
+        </div>
+        }
+     else if(ViewBag.life==0) { 
+        <div id="main">
+            <img src="~/images/wings.png" alt="dojogachi" height="300" width="600">
+            <h4>Oh no! Your Dojogachi has passed away!<h4>
+        </div>
+        <form class="restart"  action="restart" method="post">
+            <input class="button"type="submit" name="restart" value="Restart">
+        </form>
+     }
+     else { 
+        <div id="main">
+            <img src="~/images/win.png" alt="dojogachi" height="300" width="500">
+            <h4>Congratulations! Your Dojogachi is all grown up!!!</h4>
+        </div>
+        <form class="restart" action="restart" method="post">
+            <input class="button" type="submit" name="restart" value="Restart">
+        </form>
+    }
+    </body>
+</html>
