@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>Dojogachi</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="~/css/site.css" rel="stylesheet">
     </head>
     <body>
+
+    @* Setting the Stats at top of page *@
     <div id="top"> <h3>Fullness: @ViewBag.fullness </h3>
     <h3>Happiness: @ViewBag.happiness </h3>
     <h3>Meals: @ViewBag.meals</h3>
     <h3>Energy: @ViewBag.energy</h3>
     </div>
+
+
+    @*  Controlling the picture that appears for life *@
     @if(ViewBag.life==1) {
+
+        @*  Controlling the picture that appears for each action *@
         <div id="main">
             @if(ViewBag.pic=="normal"){
             <img src="~/images/egg.gif" alt="dojogachi">
@@ -30,8 +37,12 @@
                 <img src="~/images/pie.gif" alt="eating" height="300" width="600">
             }
 
+            @* Action printed below the picture *@
+
             <h4>@ViewBag.Action<h4>
         </div>
+
+        @* Command Buttons *@
         <div id="commands">
             <form action="feed" method="post">
             <input class="button" type="submit" name="feed" value="Feed"> 
@@ -47,6 +58,8 @@
             </form>
         </div>
         }
+
+        @* Ruh Roh. It died *@
      else if(ViewBag.life==0) { 
         <div id="main">
             <img src="~/images/wings.png" alt="dojogachi" height="300" width="600">
@@ -56,6 +69,8 @@
             <input class="button"type="submit" name="restart" value="Restart">
         </form>
      }
+
+     @* They won! *@
      else { 
         <div id="main">
             <img src="~/images/win.png" alt="dojogachi" height="300" width="500">
