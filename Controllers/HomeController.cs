@@ -14,24 +14,8 @@ namespace dojogachi.Controllers
         public IActionResult Index()
         // Setting all sessions to a value that isn't null
         {   
-             if(HttpContext.Session.GetString("pic")==null){
-                HttpContext.Session.SetString("pic", "normal");
-            }
-             if(HttpContext.Session.GetInt32("alive")==null){
-                HttpContext.Session.SetInt32("alive", 1);
-            }
-            if(HttpContext.Session.GetInt32("fullness")==null){
-                HttpContext.Session.SetInt32("fullness", 20);
-            }
-            if(HttpContext.Session.GetInt32("happiness")==null){
-                HttpContext.Session.SetInt32("happiness", 20);
-            }
-            if(HttpContext.Session.GetInt32("energy")==null){
-                HttpContext.Session.SetInt32("energy", 50);
-            }
-            if(HttpContext.Session.GetInt32("meals")==null){
-                HttpContext.Session.SetInt32("meals", 3);
-            }
+            //modularized out these checks
+            CheckFirstTime();
 
             // Grabbing all my sessions to put into ViewBag and manipulate
             string picture=HttpContext.Session.GetString("pic");
@@ -47,6 +31,7 @@ namespace dojogachi.Controllers
 
             // Keeping track of the dojogachi's life
             if( fullness<=0 || happiness<=0 || energy<=0 ){
+                //RIP
                 HttpContext.Session.SetInt32("alive", 0);
                 int? life=HttpContext.Session.GetInt32("alive");
                 ViewBag.Life=life;
@@ -85,32 +70,33 @@ namespace dojogachi.Controllers
                 HttpContext.Session.SetString("pic", "eat");
 
                 // if there are meals available
+                // Fixed/Changed some indentation
                 if(HttpContext.Session.GetInt32("meals")>0){
                 
-                // Grabbing Fullness from session and add points for feeding using random number
-                int? full=HttpContext.Session.GetInt32("fullness");
-                Random rnd = new Random();
-                int food = rnd.Next(5, 11);
-                full +=food;
-                HttpContext.Session.SetInt32("fullness", (int)full);
+                    // Grabbing Fullness from session and add points for feeding using random number
+                    int? full=HttpContext.Session.GetInt32("fullness");
+                    Random rnd = new Random();
+                    int food = rnd.Next(5, 11);
+                    full +=food;
+                    HttpContext.Session.SetInt32("fullness", (int)full);
 
-                // Creating action feedback line
-                string action="You fed your Dojogachi! Fullness + " + food +", Meal -1.";
-                HttpContext.Session.SetString("action", action);
+                    // Creating action feedback line
+                    string action="You fed your Dojogachi! Fullness + " + food +", Meal -1.";
+                    HttpContext.Session.SetString("action", action);
 
-                // adjusting meal amount to minus 1
-            int? meal= HttpContext.Session.GetInt32("meals");
-            meal--;
-            HttpContext.Session.SetInt32("meals", (int)meal);
-            return RedirectToAction("Index");
+                    // adjusting meal amount to minus 1
+                    int? meal= HttpContext.Session.GetInt32("meals");
+                    meal--;
+                    HttpContext.Session.SetInt32("meals", (int)meal);
+                    // return RedirectToAction("Index");
                 }
 
                 // out of food
                 else{
-                HttpContext.Session.SetString("pic", "normal");
-                string action="Sorry! You are out of meals.Better get to work.";
-                HttpContext.Session.SetString("action", action);
-                return RedirectToAction("Index");
+                    HttpContext.Session.SetString("pic", "normal");
+                    string action="Sorry! You are out of meals.Better get to work.";
+                    HttpContext.Session.SetString("action", action);
+                    // return RedirectToAction("Index");
                 }
             }
 
@@ -125,8 +111,10 @@ namespace dojogachi.Controllers
                 // returning action response
                  string action="Sorry! Your Dojogachi doesn't want to eat right now.";
                 HttpContext.Session.SetString("action", action);
-                return RedirectToAction("Index"); 
+                // return RedirectToAction("Index"); 
             }
+            //Since return is the same the fall-through after conditionals can just be the redirect action
+            return RedirectToAction("Index");
         }
 
 
@@ -253,6 +241,29 @@ namespace dojogachi.Controllers
         {
             HttpContext.Session.Clear();
            return RedirectToAction("Index"); 
+        }
+
+
+        //Method for checkwing if it is the first time a user has come to this site
+        private void CheckFirstTime() {
+            if(HttpContext.Session.GetString("pic")==null){
+                HttpContext.Session.SetString("pic", "normal");
+            }
+             if(HttpContext.Session.GetInt32("alive")==null){
+                HttpContext.Session.SetInt32("alive", 1);
+            }
+            if(HttpContext.Session.GetInt32("fullness")==null){
+                HttpContext.Session.SetInt32("fullness", 20);
+            }
+            if(HttpContext.Session.GetInt32("happiness")==null){
+                HttpContext.Session.SetInt32("happiness", 20);
+            }
+            if(HttpContext.Session.GetInt32("energy")==null){
+                HttpContext.Session.SetInt32("energy", 50);
+            }
+            if(HttpContext.Session.GetInt32("meals")==null){
+                HttpContext.Session.SetInt32("meals", 3);
+            }
         }
     }
 }
